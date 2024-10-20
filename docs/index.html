@@ -1,0 +1,46 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Media Cross-Posting Tool</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Social Media Cross-Posting Tool</h1>
+
+    <div class="form-container">
+      <form id="post-form">
+        <label for="caption">Caption:</label>
+        <textarea id="caption" rows="3" required></textarea>
+
+        <label for="social-accounts">Social Accounts:</label>
+        <div id="social-accounts">
+          <div class="account-option">
+            <input type="checkbox" id="account-x" name="account-x">
+            <label for="account-x">x.com</label>
+          </div>
+          <!-- Add more account options here -->
+        </div>
+
+        <label for="schedule-date">Schedule Date:</label>
+        <input type="datetime-local" id="schedule-date">
+
+        <button type="submit">Post Now</button>
+        <button type="button" id="schedule-btn">Schedule Post</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+
+  <!-- Custom JS -->
+  <script src="script.js"></script>
+</body>
+</html>
+```
