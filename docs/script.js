@@ -1,4 +1,3 @@
-```javascript
 // Initialize Firebase
 const firebaseConfig = {
   // Your Firebase configuration goes here
@@ -29,6 +28,27 @@ async function signOut() {
   }
 }
 
+// X.com OAuth Login
+async function loginWithX() {
+  const provider = new firebase.auth.TwitterAuthProvider();
+  try {
+    const result = await firebase.auth().signInWithPopup(provider);
+    const user = result.user;
+    console.log('X.com login successful:', user);
+
+    // Store the access token and secret for later use
+    const credential = result.credential;
+    const token = credential.accessToken;
+    const secret = credential.secret;
+    
+    // Save tokens to Firestore for posting later
+    await db.collection('users').doc(user.uid).set({ token, secret });
+    
+  } catch (error) {
+    console.error('Error during X.com login:', error);
+  }
+}
+
 // Firestore Operations
 async function savePost(post) {
   try {
@@ -49,18 +69,42 @@ async function getScheduledPosts() {
   }
 }
 
-// Scheduling
+// Schedule a post
 function schedulePost(post) {
-  // Schedule the post based on the provided date/time
+  // Schedule the post for future date/time
   setTimeout(() => {
-    // Post the content to the selected social media accounts
     postToSocialMedia(post);
   }, post.scheduleTimestamp - Date.now());
 }
 
-function postToSocialMedia(post) {
-  // Implement the logic to post the content to the selected social media accounts
-  // (e.g., make API calls to x.com, update the post status in Firestore)
+// Post to X.com
+function postToX(token, secret, caption) {
+  // Call your backend server or Firebase Function to post to X.com
+  fetch('https://your-cloud-function-url/post-to-x', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      token,
+      secret,
+      caption
+    })
+  }).then(response => response.json())
+    .then(data => console.log('Posted to X:', data))
+    .catch(error => console.error('Error posting to X:', error));
+}
+
+// Post to social media
+async function postToSocialMedia(post) {
+  const user = firebase.auth().currentUser;
+  const doc = await db.collection('users').doc(user.uid).get();
+  const { token, secret } = doc.data();
+
+  // For now, only posting to X.com
+  if (post.selectedAccounts.includes('x')) {
+    postToX(token, secret, post.caption);
+  }
 }
 
 // Event Listeners
@@ -84,7 +128,6 @@ document.getElementById('post-form').addEventListener('submit', async (event) =>
   if (scheduleDate) {
     schedulePost(post);
   } else {
-    // Post the content to the selected social media accounts
     postToSocialMedia(post);
   }
 
@@ -95,4 +138,6 @@ document.getElementById('post-form').addEventListener('submit', async (event) =>
 document.getElementById('schedule-btn').addEventListener('click', () => {
   document.getElementById('schedule-date').classList.toggle('visible');
 });
-```
+
+// X.com login event listener
+document.getElementById('login-x-btn').addEventListener('click', loginWithX);
