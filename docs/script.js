@@ -1,11 +1,12 @@
 // Initialize Firebase
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBSwrWRY03-wxJtyR9eagAAitTn9nL35HQ",
+  authDomain: "socialgather-6aa1a.firebaseapp.com",
+  projectId: "socialgather-6aa1a",
+  storageBucket: "socialgather-6aa1a.appspot.com",
+  messagingSenderId: "549872307820",
+  appId: "1:549872307820:web:621cd97fb2e31ab755d249",
+  measurementId: "G-75H6G4G0DD"
 };
 
 firebase.initializeApp(firebaseConfig);
